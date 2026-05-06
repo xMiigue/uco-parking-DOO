@@ -5,31 +5,33 @@ import co.edu.uco.ucoparking.negocio.assembler.dto.DTOAssembler;
 import co.edu.uco.ucoparking.negocio.dominio.PaisDominio;
 import co.edu.uco.ucoparking.transversal.UtilObjeto;
 
-public class PaisDTOAssembler implements DTOAssembler<PaisDominio, PaisDTO>{
-	
-	private final static DTOAssembler<PaisDominio, PaisDTO> INSTANCE;
-	
-	private static DTOAssembler<PaisDominio, PaisDTO> getInstance(){
-		
-	public synchronized static final DTOAssembler<PaisDominio, PaisDTO> getInstance(){	
-		
-		if(UtilObjeto.esNulo(INSTANCE)) {
-			INSTANCE = new PaisDTOAssembler();
-		}
-		return INSTANCE;
-	}
+public final class PaisDTOAssembler implements DTOAssembler<PaisDominio, PaisDTO> {
 
-	@Override
-	public PaisDominio ensamblarDominio(PaisDTO dto) {
-		var paisAEnsamblar = UtilObjeto.obtenerValorDefecto(dto, new PaisDTO.Builder().build());
-		return new PaisDominio.Builder().id(paisAEnsamblar.getId()).nombre(paisAEnsamblar.getNombre()).build();
-	}
+    private static final PaisDTOAssembler INSTANCIA = new PaisDTOAssembler();
 
-	@Override
-	public PaisDTO ensablarDTO(PaisDominio dominio) {
-		var paisAEnsamblar = UtilObjeto.obtenerValorDefecto(dominio, new PaisDominio.Builder().build());
-		return new PaisDTO.Builder().id(paisAEnsamblar.getId()).nombre(paisAEnsamblar.getNombre()).build();
-	}
-	
+    private PaisDTOAssembler() {
+        super();
+    }
+
+    public static final PaisDTOAssembler obtenerInstancia() {
+        return INSTANCIA;
+    }
+
+    @Override
+    public PaisDominio ensamblarDominio(final PaisDTO dto) {
+        var paisAEnsamblar = UtilObjeto.obtenerValorDefecto(dto, new PaisDTO.Builder().build());
+        return new PaisDominio.Builder()
+                .id(paisAEnsamblar.getId())
+                .nombre(paisAEnsamblar.getNombre())
+                .build();
+    }
+
+    @Override
+    public PaisDTO ensamblarDTO(final PaisDominio dominio) {
+        var paisAEnsamblar = UtilObjeto.obtenerValorDefecto(dominio, new PaisDominio.Builder().build());
+        return new PaisDTO.Builder()
+                .id(paisAEnsamblar.getId())
+                .nombre(paisAEnsamblar.getNombre())
+                .build();
+    }
 }
-

@@ -3,50 +3,52 @@ package co.edu.uco.ucoparking.dto;
 import java.util.UUID;
 
 import co.edu.uco.ucoparking.transversal.UtilTexto;
+import co.edu.uco.ucoparking.transversal.UtilUUID;
 
-public class PaisDTO {
-	
-	private UUID id;
-	private String nombre;
-	public UUID getId() {
-		return id;
-	}
-	public void setId(UUID id) {
-		this.id = id;
-	}
-	public String getNombre() {
-		return nombre;
-	}
-	private void setNombre(String nombre) {
-		this.nombre = UtilTexto.aplicarTrim(nombre);
-	}
-	
-	public static class Builder{
-		
-		private UUID id;
-		private String nombre;
-		
+public final class PaisDTO {
 
-		public Builder id(final UUID id) {
-			this.id= id;
-			return this;
-			
-		}
+    private UUID id;
+    private String nombre;
 
-		public Builder nombre(final String nombre) {
-				this.nombre = UtilTexto.aplicarTrim(nombre);
-				return this;
-			}
+    private PaisDTO(final Builder builder) {
+        super();
+        setId(builder.id);
+        setNombre(builder.nombre);
+    }
 
-	
-	
-		public PaisDTO build() {
-			return new PaisDTO(this);
-			
-		}
-	}
-	
-}	
+    public UUID getId() {
+        return id;
+    }
 
+    public void setId(final UUID id) {
+        this.id = UtilUUID.obtenerValorDefecto(id);
+    }
 
+    public String getNombre() {
+        return nombre;
+    }
 
+    private void setNombre(final String nombre) {
+        this.nombre = UtilTexto.aplicarTrim(nombre);
+    }
+
+    public static final class Builder {
+
+        private UUID id;
+        private String nombre;
+
+        public Builder id(final UUID id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder nombre(final String nombre) {
+            this.nombre = UtilTexto.aplicarTrim(nombre);
+            return this;
+        }
+
+        public PaisDTO build() {
+            return new PaisDTO(this);
+        }
+    }
+}
