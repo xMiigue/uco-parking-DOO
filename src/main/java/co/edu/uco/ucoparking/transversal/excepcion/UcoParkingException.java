@@ -3,7 +3,7 @@ package co.edu.uco.ucoparking.transversal.excepcion;
 import co.edu.uco.ucoparking.transversal.UtilObjeto;
 import co.edu.uco.ucoparking.transversal.UtilTexto;
 
-public final class UcoParkingException extends RuntimeException {
+public class UcoParkingException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
@@ -11,7 +11,7 @@ public final class UcoParkingException extends RuntimeException {
     private final String mensajeUsuario;
     private final String mensajeTecnico;
 
-    private UcoParkingException(final Throwable excepcionRaiz, final String mensajeUsuario,
+    protected UcoParkingException(final Throwable excepcionRaiz, final String mensajeUsuario,
             final String mensajeTecnico) {
         super(mensajeTecnico);
         this.excepcionRaiz = UtilObjeto.obtenerValorDefecto(excepcionRaiz, new Exception());
