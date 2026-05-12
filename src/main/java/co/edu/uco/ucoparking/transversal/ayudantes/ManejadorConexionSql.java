@@ -1,19 +1,19 @@
-package co.edu.uco.ucoparking.transversal;
+package co.edu.uco.ucoparking.transversal.ayudantes;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import co.edu.uco.ucoparking.transversal.excepcion.UcoParkingException;
+import co.edu.uco.ucoparking.transversal.excepciones.ExcepcionBaseUcoParking;
 
-public final class UtilConexionSql {
+public final class ManejadorConexionSql {
 
-    private UtilConexionSql() {
+    private ManejadorConexionSql() {
         super();
     }
 
     public static void verificarConexionNoNula(final Connection conexion) {
-        if (UtilObjeto.esNulo(conexion)) {
-            throw UcoParkingException.crear(
+        if (ManejadorObjeto.esNulo(conexion)) {
+            throw ExcepcionBaseUcoParking.crear(
                     MensajesEnum.ERROR_USUARIO_CONEXION_SQL_NULA.getContenido(),
                     MensajesEnum.ERROR_TECNICO_CONEXION_SQL_NULA.getContenido());
         }
@@ -23,14 +23,14 @@ public final class UtilConexionSql {
         verificarConexionNoNula(conexion);
         try {
             if (conexion.isClosed()) {
-                throw UcoParkingException.crear(
+                throw ExcepcionBaseUcoParking.crear(
                         MensajesEnum.ERROR_USUARIO_CONEXION_SQL_CERRADA.getContenido(),
                         MensajesEnum.ERROR_TECNICO_CONEXION_SQL_CERRADA.getContenido());
             }
-        } catch (final UcoParkingException excepcion) {
+        } catch (final ExcepcionBaseUcoParking excepcion) {
             throw excepcion;
         } catch (final SQLException excepcion) {
-            throw UcoParkingException.crear(excepcion,
+            throw ExcepcionBaseUcoParking.crear(excepcion,
                     MensajesEnum.ERROR_USUARIO_VALIDANDO_ESTADO_CONEXION.getContenido(),
                     MensajesEnum.ERROR_TECNICO_VALIDANDO_ESTADO_CONEXION.getContenido());
         }
@@ -40,14 +40,14 @@ public final class UtilConexionSql {
         verificarConexionAbierta(conexion);
         try {
             if (conexion.getAutoCommit()) {
-                throw UcoParkingException.crear(
+                throw ExcepcionBaseUcoParking.crear(
                         MensajesEnum.ERROR_USUARIO_TRANSACCION_NO_INICIADA.getContenido(),
                         MensajesEnum.ERROR_TECNICO_TRANSACCION_NO_INICIADA.getContenido());
             }
-        } catch (final UcoParkingException excepcion) {
+        } catch (final ExcepcionBaseUcoParking excepcion) {
             throw excepcion;
         } catch (final SQLException excepcion) {
-            throw UcoParkingException.crear(excepcion,
+            throw ExcepcionBaseUcoParking.crear(excepcion,
                     MensajesEnum.ERROR_USUARIO_VALIDANDO_ESTADO_CONEXION.getContenido(),
                     MensajesEnum.ERROR_TECNICO_VALIDANDO_ESTADO_CONEXION.getContenido());
         }
@@ -57,14 +57,14 @@ public final class UtilConexionSql {
         verificarConexionAbierta(conexion);
         try {
             if (!conexion.getAutoCommit()) {
-                throw UcoParkingException.crear(
+                throw ExcepcionBaseUcoParking.crear(
                         MensajesEnum.ERROR_USUARIO_TRANSACCION_YA_INICIADA.getContenido(),
                         MensajesEnum.ERROR_TECNICO_TRANSACCION_YA_INICIADA.getContenido());
             }
-        } catch (final UcoParkingException excepcion) {
+        } catch (final ExcepcionBaseUcoParking excepcion) {
             throw excepcion;
         } catch (final SQLException excepcion) {
-            throw UcoParkingException.crear(excepcion,
+            throw ExcepcionBaseUcoParking.crear(excepcion,
                     MensajesEnum.ERROR_USUARIO_VALIDANDO_ESTADO_CONEXION.getContenido(),
                     MensajesEnum.ERROR_TECNICO_VALIDANDO_ESTADO_CONEXION.getContenido());
         }

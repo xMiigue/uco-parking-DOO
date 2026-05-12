@@ -1,32 +1,32 @@
-package co.edu.uco.ucoparking.transversal;
+package co.edu.uco.ucoparking.transversal.ayudantes;
 
 import java.sql.Date;
 import java.time.LocalDate;
 
-public final class UtilFecha {
+public final class ManejadorFecha {
 
-    private UtilFecha() {
+    private ManejadorFecha() {
         super();
     }
 
-    public static LocalDate obtenerFechaPorDefecto() {
+    public static LocalDate retornarFechaPorDefecto() {
         return LocalDate.of(1, 1, 1);
     }
 
-    public static LocalDate obtenerValorDefecto(final LocalDate valor) {
-        return UtilObjeto.obtenerValorDefecto(valor, obtenerFechaPorDefecto());
+    public static LocalDate retornarValorPorDefecto(final LocalDate valor) {
+        return ManejadorObjeto.retornarValorPorDefecto(valor, retornarFechaPorDefecto());
     }
 
-    public static LocalDate obtenerFechaActual() {
+    public static LocalDate retornarFechaActual() {
         return LocalDate.now();
     }
 
     public static boolean esFechaPorDefecto(final LocalDate fecha) {
-        return obtenerFechaPorDefecto().equals(fecha);
+        return retornarFechaPorDefecto().equals(fecha);
     }
 
     public static LocalDate sqlDateALocalDate(final Date valor) {
-        return UtilObjeto.obtenerValorDefecto(valor, Date.valueOf(obtenerFechaPorDefecto())).toLocalDate();
+        return ManejadorObjeto.retornarValorPorDefecto(valor, Date.valueOf(retornarFechaPorDefecto())).toLocalDate();
     }
 
     public static boolean esFechaPosteriorOIgualAHoy(final LocalDate valor) {

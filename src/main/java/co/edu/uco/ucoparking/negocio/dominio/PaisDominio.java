@@ -2,8 +2,8 @@ package co.edu.uco.ucoparking.negocio.dominio;
 
 import java.util.UUID;
 
-import co.edu.uco.ucoparking.transversal.UtilTexto;
-import co.edu.uco.ucoparking.transversal.UtilUUID;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorTexto;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorUUID;
 
 public final class PaisDominio {
 
@@ -21,7 +21,7 @@ public final class PaisDominio {
     }
 
     private void setId(final UUID id) {
-        this.id = UtilUUID.obtenerValorDefecto(id);
+        this.id = ManejadorUUID.retornarValorPorDefecto(id);
     }
 
     public String getNombre() {
@@ -29,7 +29,7 @@ public final class PaisDominio {
     }
 
     private void setNombre(final String nombre) {
-        this.nombre = UtilTexto.aplicarTrim(nombre);
+        this.nombre = ManejadorTexto.aplicarTrim(nombre);
     }
 
     public static final class Builder {
