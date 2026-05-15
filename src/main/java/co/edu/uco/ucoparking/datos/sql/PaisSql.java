@@ -11,10 +11,10 @@ public final class PaisSql {
     public static final String ELIMINAR =
             "DELETE FROM pais WHERE id = ?";
 
-    public static final String RECUPERAR_POR_ID =
+    public static final String CONSULTAR_POR_ID =
             "SELECT p.id, p.nombre FROM pais p WHERE p.id = ?";
 
-    public static final String RECUPERAR_TODOS =
+    public static final String CONSULTAR_TODOS =
             "SELECT p.id, p.nombre FROM pais p WHERE 1=1";
 
     private PaisSql() {

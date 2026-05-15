@@ -16,53 +16,87 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.uco.ucoparking.controlador.dto.Respuesta;
 import co.edu.uco.ucoparking.dto.DepartamentoDTO;
-import co.edu.uco.ucoparking.negocio.fachada.DepartamentoFachada;
-import co.edu.uco.ucoparking.negocio.fachada.impl.DepartamentoFachadaImpl;
+import co.edu.uco.ucoparking.negocio.fachada.departamento.impl.ActualizarDepartamentoFachadaImpl;
+import co.edu.uco.ucoparking.negocio.fachada.departamento.impl.ConsultarDepartamentoPorIdFachadaImpl;
+import co.edu.uco.ucoparking.negocio.fachada.departamento.impl.ConsultarDepartamentosPorFiltroFachadaImpl;
+import co.edu.uco.ucoparking.negocio.fachada.departamento.impl.EliminarDepartamentoFachadaImpl;
+import co.edu.uco.ucoparking.negocio.fachada.departamento.impl.RegistrarNuevoDepartamentoFachadaImpl;
+import co.edu.uco.ucoparking.transversal.excepcion.UcoParkingException;
 
 @RestController
 @RequestMapping("/api/departamentos")
 public class DepartamentoControlador {
 
-    private final DepartamentoFachada fachada = new DepartamentoFachadaImpl();
-
     @PostMapping
     public ResponseEntity<Respuesta<Void>> crear(@RequestBody final DepartamentoDTO dto) {
-        Respuesta<Void> respuesta = fachada.crear(dto);
-        return respuesta.isExitoso()
-                ? ResponseEntity.ok(respuesta)
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+        try {
+            new RegistrarNuevoDepartamentoFachadaImpl().ejecutar(dto);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Respuesta.exitosaConMensaje("Departamento registrado exitosamente.", null));
+        } catch (final UcoParkingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
+        } catch (final Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Respuesta.fallida("Error interno al registrar el departamento."));
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Respuesta<DepartamentoDTO>> recuperarPorId(@PathVariable final UUID id) {
-        Respuesta<DepartamentoDTO> respuesta = fachada.recuperarPorId(id);
-        return respuesta.isExitoso()
-                ? ResponseEntity.ok(respuesta)
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+    public ResponseEntity<Respuesta<DepartamentoDTO>> consultarPorId(@PathVariable final UUID id) {
+        try {
+            final DepartamentoDTO resultado = new ConsultarDepartamentoPorIdFachadaImpl().ejecutar(id);
+            return ResponseEntity.ok(Respuesta.exitosa(resultado));
+        } catch (final UcoParkingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
+        } catch (final Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Respuesta.fallida("Error interno al consultar el departamento."));
+        }
     }
 
     @GetMapping
-    public ResponseEntity<Respuesta<List<DepartamentoDTO>>> recuperarTodos() {
-        Respuesta<List<DepartamentoDTO>> respuesta = fachada.recuperarTodos(new DepartamentoDTO.Builder().build());
-        return respuesta.isExitoso()
-                ? ResponseEntity.ok(respuesta)
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+    public ResponseEntity<Respuesta<List<DepartamentoDTO>>> consultarTodos() {
+        try {
+            final List<DepartamentoDTO> resultado = new ConsultarDepartamentosPorFiltroFachadaImpl()
+                    .ejecutar(new DepartamentoDTO.Builder().build());
+            return ResponseEntity.ok(Respuesta.exitosa(resultado));
+        } catch (final UcoParkingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
+        } catch (final Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Respuesta.fallida("Error interno al consultar los departamentos."));
+        }
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Respuesta<Void>> actualizar(@PathVariable final UUID id,
             @RequestBody final DepartamentoDTO dto) {
-        Respuesta<Void> respuesta = fachada.actualizar(dto);
-        return respuesta.isExitoso()
-                ? ResponseEntity.ok(respuesta)
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+        try {
+            final DepartamentoDTO dtoConId = new DepartamentoDTO.Builder()
+                    .id(id)
+                    .nombre(dto.getNombre())
+                    .pais(dto.getPais())
+                    .build();
+            new ActualizarDepartamentoFachadaImpl().ejecutar(dtoConId);
+            return ResponseEntity.ok(Respuesta.exitosaConMensaje("Departamento actualizado exitosamente.", null));
+        } catch (final UcoParkingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
+        } catch (final Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Respuesta.fallida("Error interno al actualizar el departamento."));
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Respuesta<Void>> eliminar(@PathVariable final UUID id) {
-        Respuesta<Void> respuesta = fachada.eliminar(id);
-        return respuesta.isExitoso()
-                ? ResponseEntity.ok(respuesta)
-                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respuesta);
+        try {
+            new EliminarDepartamentoFachadaImpl().ejecutar(id);
+            return ResponseEntity.ok(Respuesta.exitosaConMensaje("Departamento eliminado exitosamente.", null));
+        } catch (final UcoParkingException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
+        } catch (final Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Respuesta.fallida("Error interno al eliminar el departamento."));
+        }
     }
 }

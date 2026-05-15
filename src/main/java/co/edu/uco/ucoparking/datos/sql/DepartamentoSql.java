@@ -11,19 +11,11 @@ public final class DepartamentoSql {
     public static final String ELIMINAR =
             "DELETE FROM departamento WHERE id = ?";
 
-    public static final String RECUPERAR_POR_ID =
-            "SELECT d.id, d.nombre, d.id_pais, "
-            + "p.id AS pais_id, p.nombre AS pais_nombre "
-            + "FROM departamento d "
-            + "INNER JOIN pais p ON d.id_pais = p.id "
-            + "WHERE d.id = ?";
+    public static final String CONSULTAR_POR_ID =
+            "SELECT d.id, d.nombre, d.id_pais FROM departamento d WHERE d.id = ?";
 
-    public static final String RECUPERAR_TODOS =
-            "SELECT d.id, d.nombre, d.id_pais, "
-            + "p.id AS pais_id, p.nombre AS pais_nombre "
-            + "FROM departamento d "
-            + "INNER JOIN pais p ON d.id_pais = p.id "
-            + "WHERE 1=1";
+    public static final String CONSULTAR_TODOS =
+            "SELECT d.id, d.nombre, d.id_pais FROM departamento d WHERE 1=1";
 
     private DepartamentoSql() {
         super();

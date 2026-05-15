@@ -4,7 +4,7 @@ import co.edu.uco.ucoparking.entidad.CiudadEntidad;
 import co.edu.uco.ucoparking.negocio.assembler.entidad.EntidadAssembler;
 import co.edu.uco.ucoparking.negocio.dominio.CiudadDominio;
 import co.edu.uco.ucoparking.negocio.dominio.DepartamentoDominio;
-import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorObjeto;
+import co.edu.uco.ucoparking.transversal.utilitario.UtilObjeto;
 
 public final class CiudadEntidadAssembler implements EntidadAssembler<CiudadDominio, CiudadEntidad> {
 
@@ -14,29 +14,29 @@ public final class CiudadEntidadAssembler implements EntidadAssembler<CiudadDomi
         super();
     }
 
-    public static final CiudadEntidadAssembler obtenerInstancia() {
+    public static CiudadEntidadAssembler obtenerInstancia() {
         return INSTANCIA;
     }
 
     @Override
     public CiudadEntidad ensamblarEntidad(final CiudadDominio dominio) {
-        var ciudadAEnsamblar = ManejadorObjeto.retornarValorPorDefecto(dominio, new CiudadDominio.Builder().build());
+        var a = UtilObjeto.retornarValorPorDefecto(dominio, new CiudadDominio.Builder().build());
         return new CiudadEntidad.Builder()
-                .id(ciudadAEnsamblar.getId())
-                .nombre(ciudadAEnsamblar.getNombre())
-                .idDepartamento(ciudadAEnsamblar.getDepartamento().getId())
+                .id(a.getId())
+                .nombre(a.getNombre())
+                .idDepartamento(a.getDepartamento().getId())
                 .build();
     }
 
     @Override
     public CiudadDominio ensamblarDominio(final CiudadEntidad entidad) {
-        var ciudadAEnsamblar = ManejadorObjeto.retornarValorPorDefecto(entidad, new CiudadEntidad.Builder().build());
+        var a = UtilObjeto.retornarValorPorDefecto(entidad, new CiudadEntidad.Builder().build());
         var departamento = new DepartamentoDominio.Builder()
-                .id(ciudadAEnsamblar.getIdDepartamento())
+                .id(a.getIdDepartamento())
                 .build();
         return new CiudadDominio.Builder()
-                .id(ciudadAEnsamblar.getId())
-                .nombre(ciudadAEnsamblar.getNombre())
+                .id(a.getId())
+                .nombre(a.getNombre())
                 .departamento(departamento)
                 .build();
     }

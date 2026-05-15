@@ -1,7 +1,7 @@
 package co.edu.uco.ucoparking.transversal.excepcion;
 
-import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorObjeto;
-import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorTexto;
+import co.edu.uco.ucoparking.transversal.utilitario.UtilObjeto;
+import co.edu.uco.ucoparking.transversal.utilitario.UtilTexto;
 
 public class UcoParkingException extends RuntimeException {
 
@@ -14,9 +14,9 @@ public class UcoParkingException extends RuntimeException {
     protected UcoParkingException(final Throwable excepcionRaiz, final String mensajeUsuario,
             final String mensajeTecnico) {
         super(mensajeTecnico);
-        this.excepcionRaiz = ManejadorObjeto.retornarValorPorDefecto(excepcionRaiz, new Exception());
-        this.mensajeUsuario = ManejadorTexto.aplicarTrim(mensajeUsuario);
-        this.mensajeTecnico = ManejadorTexto.aplicarTrim(mensajeTecnico);
+        this.excepcionRaiz = UtilObjeto.retornarValorPorDefecto(excepcionRaiz, new Exception());
+        this.mensajeUsuario = UtilTexto.aplicarTrim(mensajeUsuario);
+        this.mensajeTecnico = UtilTexto.aplicarTrim(mensajeTecnico);
     }
 
     public static UcoParkingException crear(final String mensajeUsuario) {

@@ -2,9 +2,9 @@ package co.edu.uco.ucoparking.negocio.dominio;
 
 import java.util.UUID;
 
-import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorObjeto;
-import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorTexto;
-import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorUUID;
+import co.edu.uco.ucoparking.transversal.utilitario.UtilObjeto;
+import co.edu.uco.ucoparking.transversal.utilitario.UtilTexto;
+import co.edu.uco.ucoparking.transversal.utilitario.UtilUUID;
 
 public final class CiudadDominio {
 
@@ -32,15 +32,15 @@ public final class CiudadDominio {
     }
 
     private void setId(final UUID id) {
-        this.id = ManejadorUUID.retornarValorPorDefecto(id);
+        this.id = UtilUUID.retornarValorPorDefecto(id);
     }
 
     private void setNombre(final String nombre) {
-        this.nombre = ManejadorTexto.aplicarTrim(nombre);
+        this.nombre = UtilTexto.aplicarTrim(nombre);
     }
 
     private void setDepartamento(final DepartamentoDominio departamento) {
-        this.departamento = ManejadorObjeto.retornarValorPorDefecto(departamento, new DepartamentoDominio.Builder().build());
+        this.departamento = UtilObjeto.retornarValorPorDefecto(departamento, new DepartamentoDominio.Builder().build());
     }
 
     public static final class Builder {
