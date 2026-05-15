@@ -47,7 +47,7 @@ public class CiudadNegocioImpl implements CiudadNegocio {
         // TODO: agregar validaciones de negocio
         CiudadDominio dominio = CiudadDTOAssembler.obtenerInstancia().ensamblarDominio(dto);
         CiudadEntidad entidad = CiudadEntidadAssembler.obtenerInstancia().ensamblarEntidad(dominio);
-        fabrica.obtenerCiudadDAO().actualizar(entidad);
+        fabrica.obtenerCiudadDAO().actualizar(dominio.getId(), entidad);
     }
 
     @Override

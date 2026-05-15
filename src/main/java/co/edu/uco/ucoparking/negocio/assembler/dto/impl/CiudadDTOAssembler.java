@@ -7,7 +7,7 @@ import co.edu.uco.ucoparking.negocio.assembler.dto.DTOAssembler;
 import co.edu.uco.ucoparking.negocio.dominio.CiudadDominio;
 import co.edu.uco.ucoparking.negocio.dominio.DepartamentoDominio;
 import co.edu.uco.ucoparking.negocio.dominio.PaisDominio;
-import co.edu.uco.ucoparking.transversal.UtilObjeto;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorObjeto;
 
 public final class CiudadDTOAssembler implements DTOAssembler<CiudadDominio, CiudadDTO> {
 
@@ -23,7 +23,7 @@ public final class CiudadDTOAssembler implements DTOAssembler<CiudadDominio, Ciu
 
     @Override
     public CiudadDominio ensamblarDominio(final CiudadDTO dto) {
-        var ciudadAEnsamblar = UtilObjeto.obtenerValorDefecto(dto, new CiudadDTO.Builder().build());
+        var ciudadAEnsamblar = ManejadorObjeto.retornarValorPorDefecto(dto, new CiudadDTO.Builder().build());
         var paisDominio = new PaisDominio.Builder()
                 .id(ciudadAEnsamblar.getDepartamento().getPais().getId())
                 .nombre(ciudadAEnsamblar.getDepartamento().getPais().getNombre())
@@ -42,7 +42,7 @@ public final class CiudadDTOAssembler implements DTOAssembler<CiudadDominio, Ciu
 
     @Override
     public CiudadDTO ensamblarDTO(final CiudadDominio dominio) {
-        var ciudadAEnsamblar = UtilObjeto.obtenerValorDefecto(dominio, new CiudadDominio.Builder().build());
+        var ciudadAEnsamblar = ManejadorObjeto.retornarValorPorDefecto(dominio, new CiudadDominio.Builder().build());
         var paisDTO = new PaisDTO.Builder()
                 .id(ciudadAEnsamblar.getDepartamento().getPais().getId())
                 .nombre(ciudadAEnsamblar.getDepartamento().getPais().getNombre())

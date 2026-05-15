@@ -67,11 +67,11 @@ public final class DepartamentoSqlServerDAO implements DepartamentoDAO {
     }
 
     @Override
-    public void actualizar(final DepartamentoEntidad entidad) {
+    public void actualizar(final UUID id, final DepartamentoEntidad entidad) {
         try (PreparedStatement ps = conexion.prepareStatement(DepartamentoSql.ACTUALIZAR)) {
             ps.setString(1, entidad.getNombre());
             ps.setObject(2, entidad.getIdPais());
-            ps.setObject(3, entidad.getId());
+            ps.setObject(3, id);
             ps.executeUpdate();
         } catch (final SQLException e) {
             throw UcoParkingDatosException.crear(

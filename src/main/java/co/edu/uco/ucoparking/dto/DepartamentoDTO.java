@@ -2,9 +2,9 @@ package co.edu.uco.ucoparking.dto;
 
 import java.util.UUID;
 
-import co.edu.uco.ucoparking.transversal.UtilObjeto;
-import co.edu.uco.ucoparking.transversal.UtilTexto;
-import co.edu.uco.ucoparking.transversal.UtilUUID;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorObjeto;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorTexto;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorUUID;
 
 public final class DepartamentoDTO {
 
@@ -32,15 +32,15 @@ public final class DepartamentoDTO {
     }
 
     private void setId(final UUID id) {
-        this.id = UtilUUID.obtenerValorDefecto(id);
+        this.id = ManejadorUUID.retornarValorPorDefecto(id);
     }
 
     private void setNombre(final String nombre) {
-        this.nombre = UtilTexto.aplicarTrim(nombre);
+        this.nombre = ManejadorTexto.aplicarTrim(nombre);
     }
 
     private void setPais(final PaisDTO pais) {
-        this.pais = UtilObjeto.obtenerValorDefecto(pais, new PaisDTO.Builder().build());
+        this.pais = ManejadorObjeto.retornarValorPorDefecto(pais, new PaisDTO.Builder().build());
     }
 
     public static final class Builder {

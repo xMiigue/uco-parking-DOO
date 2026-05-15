@@ -47,7 +47,7 @@ public class DepartamentoNegocioImpl implements DepartamentoNegocio {
         // TODO: agregar validaciones de negocio
         DepartamentoDominio dominio = DepartamentoDTOAssembler.obtenerInstancia().ensamblarDominio(dto);
         DepartamentoEntidad entidad = DepartamentoEntidadAssembler.obtenerInstancia().ensamblarEntidad(dominio);
-        fabrica.obtenerDepartamentoDAO().actualizar(entidad);
+        fabrica.obtenerDepartamentoDAO().actualizar(dominio.getId(), entidad);
     }
 
     @Override

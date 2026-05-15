@@ -67,11 +67,11 @@ public final class CiudadSqlServerDAO implements CiudadDAO {
     }
 
     @Override
-    public void actualizar(final CiudadEntidad entidad) {
+    public void actualizar(final UUID id, final CiudadEntidad entidad) {
         try (PreparedStatement ps = conexion.prepareStatement(CiudadSql.ACTUALIZAR)) {
             ps.setString(1, entidad.getNombre());
             ps.setObject(2, entidad.getIdDepartamento());
-            ps.setObject(3, entidad.getId());
+            ps.setObject(3, id);
             ps.executeUpdate();
         } catch (final SQLException e) {
             throw UcoParkingDatosException.crear(

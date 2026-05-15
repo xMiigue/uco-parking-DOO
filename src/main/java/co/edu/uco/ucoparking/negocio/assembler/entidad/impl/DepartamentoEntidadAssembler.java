@@ -4,7 +4,7 @@ import co.edu.uco.ucoparking.entidad.DepartamentoEntidad;
 import co.edu.uco.ucoparking.negocio.assembler.entidad.EntidadAssembler;
 import co.edu.uco.ucoparking.negocio.dominio.DepartamentoDominio;
 import co.edu.uco.ucoparking.negocio.dominio.PaisDominio;
-import co.edu.uco.ucoparking.transversal.UtilObjeto;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorObjeto;
 
 public final class DepartamentoEntidadAssembler implements EntidadAssembler<DepartamentoDominio, DepartamentoEntidad> {
 
@@ -20,7 +20,7 @@ public final class DepartamentoEntidadAssembler implements EntidadAssembler<Depa
 
     @Override
     public DepartamentoEntidad ensamblarEntidad(final DepartamentoDominio dominio) {
-        var deptoAEnsamblar = UtilObjeto.obtenerValorDefecto(dominio, new DepartamentoDominio.Builder().build());
+        var deptoAEnsamblar = ManejadorObjeto.retornarValorPorDefecto(dominio, new DepartamentoDominio.Builder().build());
         return new DepartamentoEntidad.Builder()
                 .id(deptoAEnsamblar.getId())
                 .nombre(deptoAEnsamblar.getNombre())
@@ -30,7 +30,7 @@ public final class DepartamentoEntidadAssembler implements EntidadAssembler<Depa
 
     @Override
     public DepartamentoDominio ensamblarDominio(final DepartamentoEntidad entidad) {
-        var deptoAEnsamblar = UtilObjeto.obtenerValorDefecto(entidad, new DepartamentoEntidad.Builder().build());
+        var deptoAEnsamblar = ManejadorObjeto.retornarValorPorDefecto(entidad, new DepartamentoEntidad.Builder().build());
         var pais = new PaisDominio.Builder()
                 .id(deptoAEnsamblar.getIdPais())
                 .build();

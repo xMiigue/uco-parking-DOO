@@ -66,10 +66,10 @@ public final class PaisSqlServerDAO implements PaisDAO {
     }
 
     @Override
-    public void actualizar(final PaisEntidad entidad) {
+    public void actualizar(final UUID id, final PaisEntidad entidad) {
         try (PreparedStatement ps = conexion.prepareStatement(PaisSql.ACTUALIZAR)) {
             ps.setString(1, entidad.getNombre());
-            ps.setObject(2, entidad.getId());
+            ps.setObject(2, id);
             ps.executeUpdate();
         } catch (final SQLException e) {
             throw UcoParkingDatosException.crear(

@@ -2,8 +2,8 @@ package co.edu.uco.ucoparking.entidad;
 
 import java.util.UUID;
 
-import co.edu.uco.ucoparking.transversal.UtilTexto;
-import co.edu.uco.ucoparking.transversal.UtilUUID;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorTexto;
+import co.edu.uco.ucoparking.transversal.ayudantes.ManejadorUUID;
 
 public final class DepartamentoEntidad {
 
@@ -31,15 +31,15 @@ public final class DepartamentoEntidad {
     }
 
     private void setId(final UUID id) {
-        this.id = UtilUUID.obtenerValorDefecto(id);
+        this.id = ManejadorUUID.retornarValorPorDefecto(id);
     }
 
     private void setNombre(final String nombre) {
-        this.nombre = UtilTexto.aplicarTrim(nombre);
+        this.nombre = ManejadorTexto.aplicarTrim(nombre);
     }
 
     private void setIdPais(final UUID idPais) {
-        this.idPais = UtilUUID.obtenerValorDefecto(idPais);
+        this.idPais = ManejadorUUID.retornarValorPorDefecto(idPais);
     }
 
     public static final class Builder {

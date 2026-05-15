@@ -47,7 +47,7 @@ public class PaisNegocioImpl implements PaisNegocio {
         // TODO: agregar validaciones de negocio
         PaisDominio dominio = PaisDTOAssembler.obtenerInstancia().ensamblarDominio(dto);
         PaisEntidad entidad = PaisEntidadAssembler.obtenerInstancia().ensamblarEntidad(dominio);
-        fabrica.obtenerPaisDAO().actualizar(entidad);
+        fabrica.obtenerPaisDAO().actualizar(dominio.getId(), entidad);
     }
 
     @Override

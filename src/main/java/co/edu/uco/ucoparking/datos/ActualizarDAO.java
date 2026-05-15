@@ -1,6 +1,6 @@
 package co.edu.uco.ucoparking.datos;
 
-public interface ActualizarDAO<E> {
+public interface ActualizarDAO<E, ID> {
 
-    void actualizar(E entidad);
+    void actualizar(ID id, E entidad);
 }

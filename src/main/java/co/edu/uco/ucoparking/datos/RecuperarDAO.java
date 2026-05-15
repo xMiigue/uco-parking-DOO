@@ -1,11 +1,10 @@
 package co.edu.uco.ucoparking.datos;
 
 import java.util.List;
-import java.util.UUID;
 
-public interface RecuperarDAO<E> {
+public interface RecuperarDAO<E, ID> {
 
-    E recuperarPorId(UUID id);
+    E recuperarPorId(ID id);
 
     List<E> recuperarTodos(E filtro);
 }
