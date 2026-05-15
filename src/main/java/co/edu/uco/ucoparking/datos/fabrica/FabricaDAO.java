@@ -12,10 +12,15 @@ import co.edu.uco.ucoparking.transversal.excepcion.UcoParkingDatosException;
 
 public abstract class FabricaDAO {
 
-    private static final String URL =
-            "jdbc:sqlserver://localhost:1433;databaseName=UcoParking;encrypt=false;trustServerCertificate=true";
-    private static final String USUARIO = "sa";
-    private static final String CLAVE = "sa";
+    private static final String URL = System.getenv("DB_URL") != null
+            ? System.getenv("DB_URL")
+            : "jdbc:sqlserver://localhost:1433;databaseName=UcoParking;encrypt=false;trustServerCertificate=true";
+    private static final String USUARIO = System.getenv("DB_USERNAME") != null
+            ? System.getenv("DB_USERNAME")
+            : "sa";
+    private static final String CLAVE = System.getenv("DB_PASSWORD") != null
+            ? System.getenv("DB_PASSWORD")
+            : "";
 
     protected Connection conexion;
 
