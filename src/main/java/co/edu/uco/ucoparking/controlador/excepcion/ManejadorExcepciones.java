@@ -1,0 +1,34 @@
+package co.edu.uco.ucoparking.controlador.excepcion;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import co.edu.uco.ucoparking.controlador.respuesta.RespuestaError;
+import co.edu.uco.ucoparking.transversal.excepcion.UcoParkingException;
+
+@RestControllerAdvice
+public class ManejadorExcepciones {
+
+    @ExceptionHandler(UcoParkingException.class)
+    public ResponseEntity<RespuestaError> gestionarUcoParkingException(final UcoParkingException excepcion) {
+        System.err.println(excepcion.getMensajeTecnico());
+        excepcion.getExcepcionRaiz().printStackTrace();
+
+        return new ResponseEntity<>(
+                RespuestaError.crear(excepcion.getMensajeUsuario()),
+                HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<RespuestaError> gestionarExcepcion(final Exception excepcion) {
+        System.err.println("Excepcion no controlada.");
+        excepcion.printStackTrace();
+
+        return new ResponseEntity<>(
+                RespuestaError.crear("Se ha presentado un problema inesperado. Por favor intente de nuevo. Si el problema persiste, contacte al administrador."),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+}

@@ -14,85 +14,68 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.uco.ucoparking.controlador.dto.Respuesta;
+import co.edu.uco.ucoparking.controlador.respuesta.RespuestaExito;
 import co.edu.uco.ucoparking.dto.PaisDTO;
+import co.edu.uco.ucoparking.negocio.fachada.pais.ActualizarPaisFachada;
+import co.edu.uco.ucoparking.negocio.fachada.pais.ConsultarPaisPorIdFachada;
+import co.edu.uco.ucoparking.negocio.fachada.pais.ConsultarPaisesPorFiltroFachada;
+import co.edu.uco.ucoparking.negocio.fachada.pais.EliminarPaisFachada;
+import co.edu.uco.ucoparking.negocio.fachada.pais.RegistrarNuevoPaisFachada;
 import co.edu.uco.ucoparking.negocio.fachada.pais.impl.ActualizarPaisFachadaImpl;
 import co.edu.uco.ucoparking.negocio.fachada.pais.impl.ConsultarPaisPorIdFachadaImpl;
 import co.edu.uco.ucoparking.negocio.fachada.pais.impl.ConsultarPaisesPorFiltroFachadaImpl;
 import co.edu.uco.ucoparking.negocio.fachada.pais.impl.EliminarPaisFachadaImpl;
 import co.edu.uco.ucoparking.negocio.fachada.pais.impl.RegistrarNuevoPaisFachadaImpl;
-import co.edu.uco.ucoparking.transversal.excepcion.UcoParkingException;
 
 @RestController
-@RequestMapping("/api/paises")
+@RequestMapping("/api/v1/paises")
 public class PaisControlador {
 
     @PostMapping
-    public ResponseEntity<Respuesta<Void>> crear(@RequestBody final PaisDTO dto) {
-        try {
-            new RegistrarNuevoPaisFachadaImpl().ejecutar(dto);
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(Respuesta.exitosaConMensaje("País registrado exitosamente.", null));
-        } catch (final UcoParkingException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
-        } catch (final Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Respuesta.fallida("Error interno al registrar el país."));
-        }
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Respuesta<PaisDTO>> consultarPorId(@PathVariable final UUID id) {
-        try {
-            final PaisDTO resultado = new ConsultarPaisPorIdFachadaImpl().ejecutar(id);
-            return ResponseEntity.ok(Respuesta.exitosa(resultado));
-        } catch (final UcoParkingException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
-        } catch (final Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Respuesta.fallida("Error interno al consultar el país."));
-        }
-    }
-
-    @GetMapping
-    public ResponseEntity<Respuesta<List<PaisDTO>>> consultarTodos() {
-        try {
-            final List<PaisDTO> resultado = new ConsultarPaisesPorFiltroFachadaImpl()
-                    .ejecutar(new PaisDTO.Builder().build());
-            return ResponseEntity.ok(Respuesta.exitosa(resultado));
-        } catch (final UcoParkingException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
-        } catch (final Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Respuesta.fallida("Error interno al consultar los países."));
-        }
+    public ResponseEntity<RespuestaExito<String>> registrarNuevoPais(@RequestBody final PaisDTO dto) {
+        RegistrarNuevoPaisFachada fachada = new RegistrarNuevoPaisFachadaImpl();
+        fachada.ejecutar(dto);
+        return new ResponseEntity<>(
+                RespuestaExito.crear("El país se ha registrado exitosamente.", ""),
+                HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Respuesta<Void>> actualizar(@PathVariable final UUID id,
+    public ResponseEntity<RespuestaExito<String>> actualizarPais(@PathVariable final UUID id,
             @RequestBody final PaisDTO dto) {
-        try {
-            final PaisDTO dtoConId = new PaisDTO.Builder().id(id).nombre(dto.getNombre()).build();
-            new ActualizarPaisFachadaImpl().ejecutar(dtoConId);
-            return ResponseEntity.ok(Respuesta.exitosaConMensaje("País actualizado exitosamente.", null));
-        } catch (final UcoParkingException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
-        } catch (final Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Respuesta.fallida("Error interno al actualizar el país."));
-        }
+        final PaisDTO dtoConId = new PaisDTO.Builder().id(id).nombre(dto.getNombre()).build();
+        ActualizarPaisFachada fachada = new ActualizarPaisFachadaImpl();
+        fachada.ejecutar(dtoConId);
+        return new ResponseEntity<>(
+                RespuestaExito.crear("El país se ha actualizado exitosamente.", ""),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Respuesta<Void>> eliminar(@PathVariable final UUID id) {
-        try {
-            new EliminarPaisFachadaImpl().ejecutar(id);
-            return ResponseEntity.ok(Respuesta.exitosaConMensaje("País eliminado exitosamente.", null));
-        } catch (final UcoParkingException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Respuesta.fallida(e.getMensajeUsuario()));
-        } catch (final Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Respuesta.fallida("Error interno al eliminar el país."));
-        }
+    public ResponseEntity<RespuestaExito<String>> eliminarPais(@PathVariable final UUID id) {
+        EliminarPaisFachada fachada = new EliminarPaisFachadaImpl();
+        fachada.ejecutar(id);
+        return new ResponseEntity<>(
+                RespuestaExito.crear("El país se ha eliminado exitosamente.", ""),
+                HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<RespuestaExito<PaisDTO>> consultarPaisPorId(@PathVariable final UUID id) {
+        ConsultarPaisPorIdFachada fachada = new ConsultarPaisPorIdFachadaImpl();
+        final PaisDTO resultado = fachada.ejecutar(id);
+        return new ResponseEntity<>(
+                RespuestaExito.crear("El país se ha consultado exitosamente.", resultado),
+                HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<RespuestaExito<List<PaisDTO>>> consultarPaises() {
+        ConsultarPaisesPorFiltroFachada fachada = new ConsultarPaisesPorFiltroFachadaImpl();
+        final List<PaisDTO> resultado = fachada.ejecutar(new PaisDTO.Builder().build());
+        return new ResponseEntity<>(
+                RespuestaExito.crear("Países consultados exitosamente.", resultado),
+                HttpStatus.OK);
+    }
+
 }
