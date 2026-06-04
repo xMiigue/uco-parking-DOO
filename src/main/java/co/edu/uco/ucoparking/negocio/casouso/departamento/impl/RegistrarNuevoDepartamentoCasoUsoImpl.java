@@ -1,5 +1,8 @@
 package co.edu.uco.ucoparking.negocio.casouso.departamento.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import co.edu.uco.ucoparking.datos.fabrica.FabricaDAO;
 import co.edu.uco.ucoparking.entidad.DepartamentoEntidad;
 import co.edu.uco.ucoparking.negocio.assembler.entidad.impl.DepartamentoEntidadAssembler;
@@ -13,6 +16,8 @@ import co.edu.uco.ucoparking.transversal.utilitario.UtilUUID;
 
 public final class RegistrarNuevoDepartamentoCasoUsoImpl implements RegistrarNuevoDepartamentoCasoUso {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrarNuevoDepartamentoCasoUsoImpl.class);
+
     private final FabricaDAO fabricaDAO;
 
     public RegistrarNuevoDepartamentoCasoUsoImpl(final FabricaDAO fabricaDAO) {
@@ -22,6 +27,7 @@ public final class RegistrarNuevoDepartamentoCasoUsoImpl implements RegistrarNue
 
     @Override
     public void ejecutar(final DepartamentoDominio datos) {
+        LOGGER.debug("Iniciando registro de nuevo departamento...");
         validar(datos);
         final DepartamentoEntidad entidad = DepartamentoEntidadAssembler.obtenerInstancia().ensamblarEntidad(
                 new DepartamentoDominio.Builder()
@@ -30,9 +36,11 @@ public final class RegistrarNuevoDepartamentoCasoUsoImpl implements RegistrarNue
                         .pais(datos.getPais())
                         .build());
         fabricaDAO.obtenerDepartamentoDAO().crear(entidad);
+        LOGGER.debug("Departamento registrado exitosamente con nombre: {}", datos.getNombre());
     }
 
     private void validar(final DepartamentoDominio datos) {
+        LOGGER.debug("Validando datos del departamento...");
         if (UtilObjeto.esNulo(datos)) {
             throw UcoParkingException.crear("Los datos del departamento son obligatorios.");
         }
@@ -53,5 +61,6 @@ public final class RegistrarNuevoDepartamentoCasoUsoImpl implements RegistrarNue
         if (!fabricaDAO.obtenerDepartamentoDAO().consultarPorFiltro(filtro).isEmpty()) {
             throw UcoParkingException.crear("Ya existe un departamento con el nombre indicado en ese país.");
         }
+        LOGGER.debug("Validación completada sin errores.");
     }
 }

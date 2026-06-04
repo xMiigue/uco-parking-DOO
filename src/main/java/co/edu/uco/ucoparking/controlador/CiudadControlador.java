@@ -3,6 +3,8 @@ package co.edu.uco.ucoparking.controlador;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,10 +33,14 @@ import co.edu.uco.ucoparking.negocio.fachada.ciudad.impl.RegistrarNuevaCiudadFac
 @RequestMapping("/api/v1/ciudades")
 public class CiudadControlador {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CiudadControlador.class);
+
     @PostMapping
     public ResponseEntity<RespuestaExito<String>> registrarNuevaCiudad(@RequestBody final CiudadDTO dto) {
+        LOGGER.info("Solicitud recibida: registrar nueva ciudad.");
         RegistrarNuevaCiudadFachada fachada = new RegistrarNuevaCiudadFachadaImpl();
         fachada.ejecutar(dto);
+        LOGGER.info("Ciudad registrada exitosamente.");
         return new ResponseEntity<>(
                 RespuestaExito.crear("La ciudad se ha registrado exitosamente.", ""),
                 HttpStatus.CREATED);
@@ -43,10 +49,12 @@ public class CiudadControlador {
     @PutMapping("/{id}")
     public ResponseEntity<RespuestaExito<String>> actualizarCiudad(@PathVariable final UUID id,
             @RequestBody final CiudadDTO dto) {
+        LOGGER.info("Solicitud recibida: actualizar ciudad con id {}.", id);
         final CiudadDTO dtoConId = new CiudadDTO.Builder()
                 .id(id).nombre(dto.getNombre()).departamento(dto.getDepartamento()).build();
         ActualizarCiudadFachada fachada = new ActualizarCiudadFachadaImpl();
         fachada.ejecutar(dtoConId);
+        LOGGER.info("Ciudad con id {} actualizada exitosamente.", id);
         return new ResponseEntity<>(
                 RespuestaExito.crear("La ciudad se ha actualizado exitosamente.", ""),
                 HttpStatus.OK);
@@ -54,8 +62,10 @@ public class CiudadControlador {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RespuestaExito<String>> eliminarCiudad(@PathVariable final UUID id) {
+        LOGGER.info("Solicitud recibida: eliminar ciudad con id {}.", id);
         EliminarCiudadFachada fachada = new EliminarCiudadFachadaImpl();
         fachada.ejecutar(id);
+        LOGGER.info("Ciudad con id {} eliminada exitosamente.", id);
         return new ResponseEntity<>(
                 RespuestaExito.crear("La ciudad se ha eliminado exitosamente.", ""),
                 HttpStatus.OK);
@@ -63,8 +73,10 @@ public class CiudadControlador {
 
     @GetMapping("/{id}")
     public ResponseEntity<RespuestaExito<CiudadDTO>> consultarCiudadPorId(@PathVariable final UUID id) {
+        LOGGER.info("Solicitud recibida: consultar ciudad por id {}.", id);
         ConsultarCiudadPorIdFachada fachada = new ConsultarCiudadPorIdFachadaImpl();
         final CiudadDTO resultado = fachada.ejecutar(id);
+        LOGGER.info("Ciudad con id {} consultada exitosamente.", id);
         return new ResponseEntity<>(
                 RespuestaExito.crear("La ciudad se ha consultado exitosamente.", resultado),
                 HttpStatus.OK);
@@ -72,8 +84,10 @@ public class CiudadControlador {
 
     @GetMapping
     public ResponseEntity<RespuestaExito<List<CiudadDTO>>> consultarCiudades() {
+        LOGGER.info("Solicitud recibida: consultar todas las ciudades.");
         ConsultarCiudadesPorFiltroFachada fachada = new ConsultarCiudadesPorFiltroFachadaImpl();
         final List<CiudadDTO> resultado = fachada.ejecutar(new CiudadDTO.Builder().build());
+        LOGGER.info("Consulta de ciudades completada. Registros obtenidos: {}.", resultado.size());
         return new ResponseEntity<>(
                 RespuestaExito.crear("Ciudades consultadas exitosamente.", resultado),
                 HttpStatus.OK);

@@ -1,5 +1,8 @@
 package co.edu.uco.ucoparking.negocio.casouso.ciudad.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import co.edu.uco.ucoparking.datos.fabrica.FabricaDAO;
 import co.edu.uco.ucoparking.entidad.CiudadEntidad;
 import co.edu.uco.ucoparking.negocio.assembler.entidad.impl.CiudadEntidadAssembler;
@@ -13,6 +16,8 @@ import co.edu.uco.ucoparking.transversal.utilitario.UtilUUID;
 
 public final class RegistrarNuevaCiudadCasoUsoImpl implements RegistrarNuevaCiudadCasoUso {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrarNuevaCiudadCasoUsoImpl.class);
+
     private final FabricaDAO fabricaDAO;
 
     public RegistrarNuevaCiudadCasoUsoImpl(final FabricaDAO fabricaDAO) {
@@ -22,6 +27,7 @@ public final class RegistrarNuevaCiudadCasoUsoImpl implements RegistrarNuevaCiud
 
     @Override
     public void ejecutar(final CiudadDominio datos) {
+        LOGGER.debug("Iniciando registro de nueva ciudad...");
         validar(datos);
         final CiudadEntidad entidad = CiudadEntidadAssembler.obtenerInstancia().ensamblarEntidad(
                 new CiudadDominio.Builder()
@@ -30,9 +36,11 @@ public final class RegistrarNuevaCiudadCasoUsoImpl implements RegistrarNuevaCiud
                         .departamento(datos.getDepartamento())
                         .build());
         fabricaDAO.obtenerCiudadDAO().crear(entidad);
+        LOGGER.debug("Ciudad registrada exitosamente con nombre: {}", datos.getNombre());
     }
 
     private void validar(final CiudadDominio datos) {
+        LOGGER.debug("Validando datos de la ciudad...");
         if (UtilObjeto.esNulo(datos)) {
             throw UcoParkingException.crear("Los datos de la ciudad son obligatorios.");
         }
@@ -53,5 +61,6 @@ public final class RegistrarNuevaCiudadCasoUsoImpl implements RegistrarNuevaCiud
         if (!fabricaDAO.obtenerCiudadDAO().consultarPorFiltro(filtro).isEmpty()) {
             throw UcoParkingException.crear("Ya existe una ciudad con el nombre indicado en ese departamento.");
         }
+        LOGGER.debug("Validación completada sin errores.");
     }
 }
